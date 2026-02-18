@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,15 @@ async function bootstrap() {
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
+
+  // Habilitar el pipe de validación de forma global
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Elimina propiedades que no están en el DTO
+      forbidNonWhitelisted: true, // Lanza error si hay propiedades extra
+      transform: true, // <--- Habilita la transformación de class-transformer
+    }),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }
