@@ -28,23 +28,56 @@ Sistema robusto de autenticación y control de acceso basado en **JWT (JSON Web
   <img src="./public/MER.png" alt="RBAC / MER" width="1000" height="400">
 </div>
 
-## Project setup
+<br>
 
+# 🔧 Configuración inicial
+
+### 📦 Instalación:
 ```bash
-$ npm install
+npm install
 ```
 
-# 🚀 Como ejecutar el proyecto
+### ⚠️ Importante:
+Si el proyecto es ejecutado de manera local, Recuerda crear la base de datos primero en PostgreSQL.
 
-Este servicio esta diseñado para se ejecutado en docker. Por lo tanto, para poder ejecutarlo primero debes de llenar los datos del archivo `.env.example`, cambiar el nombre del archivo a `.env` y luego ejecutar los siguientes comandos:
+### 🔐 Variables de entorno (.env):
+Debes renombrar `.env.example` a `.env` y configurar:
 
-### 💻 Desarrollo
+**Generales:**
+- `PORT=` - Puerto de la aplicación
+- `API_RATE_LIMIT_MAX` - Límite de peticiones por ventana de tiempo
+- `API_RATE_LIMIT_WINDOW` - Ventana de tiempo (15 min en ms)
+- `TOKEN_ACCESS` - Llave secreta para tokens JWT
+- `TOKEN_ACCESS_REFRESH` - Llave para refresh tokens
+
+**Base de datos:**
+- `DB_HOST` - IMPORTANTE: usa el nombre del servicio Docker o localhost si se ejecuta en local
+- `DB_PORT` - Puerto PostgreSQL
+- `DB_NAME` - Nombre de la base de datos
+- `DB_USERNAME` - Usuario
+- `DB_PASSWORD` - Contraseña
+
+**Frontend:**
+- `FRONTEND_URL` - URL del frontend para CORS
+
+<br>
+
+# 🚀 Ejecución
+
+### 🐳 En Docker (producción):
 ```bash
+# SOLO PRODUCCIÓN
+# Construir imagen
+docker compose -f docker-compose.yml build
 
-# Para construir la imagen de docker
-npm run start:docker:dev:build
+# Ejecutar contenedores
+docker compose -f docker-compose.yml up
+```
 
-# Para ejecutar el servicio en modo desarrollo
-npm run start:docker:dev:run
+### 💻 En local (desarrollo):
 
+```bash
+# SOLO DESARROLLO
+# Modo hot-reload
+npm run start:dev
 ```
