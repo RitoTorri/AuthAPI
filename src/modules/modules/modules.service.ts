@@ -28,7 +28,6 @@ export class ModulesService {
         select: ['moduleId', 'name', 'active', 'createdAt'],
         order: { moduleId: 'ASC' },
         where: { active: active },
-        withDeleted: true
       });
     } catch (error) { throw error; }
   }

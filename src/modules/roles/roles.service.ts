@@ -27,8 +27,7 @@ export class RolesService {
       return await this.roleRepository.find({
         where: { active: active },
         select: ['roleId', 'name', 'active'],
-        order: { roleId: 'ASC' },
-        withDeleted: true
+        order: { roleId: 'ASC' }
       });
     } catch (error) { throw error; }
   }
