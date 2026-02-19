@@ -55,7 +55,7 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (roleExists.active) throw new Error('Role is active');
 
-      const roleRestored = await this.roleRepository.update(id, { active: true });
+      const roleRestored = await this.roleRepository.restore(id);
       return roleRestored;
     } catch (error) { throw error; }
   }
@@ -67,28 +67,31 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (!roleExists.active) throw new Error('Role is inactive');
 
-      const roleDeleted = await this.roleRepository.update(id, { active: false, deletedAt: new Date() });
+      const roleDeleted = await this.roleRepository.softDelete(id);
       return roleDeleted;
     } catch (error) { throw error; }
   }
 
 
   async findByName(name: string) {
-    return await this.roleRepository.findOne({
-      where: { name: name },
-      select: ['roleId', 'name', 'active'],
-      order: { roleId: 'ASC' },
-      withDeleted: true,
-    });
+    try {
+      return await this.roleRepository.findOne({
+        where: { name: name },
+        select: ['roleId', 'name', 'active'],
+        order: { roleId: 'ASC' },
+        withDeleted: true,
+      });
+    } catch (error) { throw error; }
   }
 
 
   async findById(id: number) {
-    return await this.roleRepository.findOne({
-      where: { roleId: id },
-      select: ['roleId', 'name', 'active'],
-      order: { roleId: 'ASC' },
-      withDeleted: true,
-    });
+    try {
+      return await this.roleRepository.findOne({
+        where: { roleId: id },
+        select: ['roleId', 'name', 'active'],
+        withDeleted: true,
+      });
+    } catch (error) { throw error; }
   }
 }
