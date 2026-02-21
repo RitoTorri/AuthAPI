@@ -18,5 +18,9 @@ export class Role {
     updatedAt: Date;
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
+<<<<<<< HEAD
     deletedAt: Date;
+=======
+    deletedAt: Date | null;
+>>>>>>> desarrollo
 }

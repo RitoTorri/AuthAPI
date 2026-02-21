@@ -8,5 +8,9 @@ import { Role } from './entities/role.entity'; // 2. Importa tu entidad
   imports: [TypeOrmModule.forFeature([Role])], // 3. Regístralo aquí
   controllers: [RolesController],
   providers: [RolesService],
+<<<<<<< HEAD
+=======
+  exports: [RolesService],
+>>>>>>> desarrollo
 })
 export class RolesModule {}

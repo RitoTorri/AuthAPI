@@ -18,9 +18,17 @@ async function bootstrap() {
   // Habilitar el pipe de validación de forma global
   app.useGlobalPipes(
     new ValidationPipe({
+<<<<<<< HEAD
       whitelist: true, // Elimina propiedades que no están en el DTO
       forbidNonWhitelisted: true, // Lanza error si hay propiedades extra
       transform: true, // <--- Habilita la transformación de class-transformer
+=======
+      whitelist: true,       // Elimina propiedades que no estén en el DTO
+      transform: true,       // ¡CLAVE! Transforma los tipos automáticamente
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+>>>>>>> desarrollo
     }),
   );
 

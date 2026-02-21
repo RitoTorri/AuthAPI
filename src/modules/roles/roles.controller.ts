@@ -12,16 +12,28 @@ export class RolesController {
   async create(@Res() res: Response, @Body() createRoleDto: RoleDto) {
     try {
       const newRole = await this.rolesService.create(createRoleDto);
+<<<<<<< HEAD
       return newRole 
       ? responses.responseSuccessful(res, 201, 'Rol creado exitosamente', newRole)
       : responses.responsefailed(res, 400, 'Error al crear el rol.');
+=======
+      return newRole
+        ? responses.responseSuccessful(res, 201, 'Rol creado exitosamente', newRole)
+        : responses.responsefailed(res, 400, 'Error al crear el rol.');
+>>>>>>> desarrollo
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+<<<<<<< HEAD
       if (errorMessage === 'Role already exists') {
         return responses.responsefailed(res, 409, 'Ya existe un rol con ese nombre. Elige otro.');
       }
+=======
+      if (errorMessage === 'Role already exists') 
+        return responses.responsefailed(res, 409, 'Ya existe un rol con ese nombre. Elige otro.');
+      
+>>>>>>> desarrollo
       return responses.responsefailed(res, 500, errorMessage);
     }
   }
@@ -54,6 +66,7 @@ export class RolesController {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+<<<<<<< HEAD
       if (errorMessage === 'Role not found') {
         return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
       }
@@ -67,6 +80,18 @@ export class RolesController {
       }
 
       return responses.responsefailed(res, 500, errorMessage);
+=======
+      switch(errorMessage) {
+        case 'Role not found':
+          return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
+        case 'Role is inactive':
+          return responses.responsefailed(res, 409, 'El rol está inactivo. No puedes actualizarlo hasta que sea restaurado.');
+        case 'Role already exists':
+          return responses.responsefailed(res, 409, 'Ya existe un rol con ese nombre. Elige otro.');
+        default:
+          return responses.responsefailed(res, 500, errorMessage);
+      }
+>>>>>>> desarrollo
     }
   }
 
@@ -82,6 +107,7 @@ export class RolesController {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+<<<<<<< HEAD
       if (errorMessage === 'Role not found') {
         return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
       }
@@ -91,6 +117,16 @@ export class RolesController {
       }
 
       return responses.responsefailed(res, 500, errorMessage);
+=======
+      switch (errorMessage) {
+        case 'Role not found':
+          return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
+        case 'Role is active':
+          return responses.responsefailed(res, 409, 'El rol ya está activo, no puede ser restaurado.');
+        default:
+          return responses.responsefailed(res, 500, errorMessage);
+      }
+>>>>>>> desarrollo
     }
   }
 
@@ -106,6 +142,7 @@ export class RolesController {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+<<<<<<< HEAD
       if (errorMessage === 'Role not found') {
         return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
       }
@@ -115,6 +152,16 @@ export class RolesController {
       }
 
       return responses.responsefailed(res, 500, errorMessage);
+=======
+      switch(errorMessage) {
+        case 'Role not found':
+          return responses.responsefailed(res, 404, 'No existe un rol con el id proporcionado.');
+        case 'Role is inactive':
+          return responses.responsefailed(res, 409, 'El rol ya está inactivo, no puede ser eliminado nuevamente.');
+        default:
+          return responses.responsefailed(res, 500, errorMessage);
+      }
+>>>>>>> desarrollo
     }
   }
 }
