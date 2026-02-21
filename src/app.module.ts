@@ -7,7 +7,6 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 import { ModulesModule } from './modules/modules/modules.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
-import { RolesPermissionsModule } from './modules/roles_permissions/roles_permissions.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 
 @Module({
@@ -27,8 +26,6 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
     UsersModule,
 
     RolesModule,
-
-    RolesPermissionsModule,
 
     PermissionsModule,
   ],
