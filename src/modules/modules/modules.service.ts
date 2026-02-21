@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ModuleDto } from './dto/module.dto';
-import { Module } from './entities/module.entity';
+import { Modul } from './entities/module.entity';
 
 @Injectable()
 export class ModulesService {
   constructor(
-    @InjectRepository(Module)
-    private readonly moduleRespository: Repository<Module>,
+    @InjectRepository(Modul)
+    private readonly moduleRespository: Repository<Modul>,
   ) { }
 
   async create(createModuleDto: ModuleDto) {
@@ -22,12 +22,13 @@ export class ModulesService {
   }
 
 
-  async findAll(active: boolean): Promise<Module[]> {
+  async findAll(active: boolean): Promise<Modul[]> {
     try {
       return await this.moduleRespository.find({
         select: ['moduleId', 'name', 'active', 'createdAt'],
         order: { moduleId: 'ASC' },
         where: { active: active },
+        withDeleted: true,
       });
     } catch (error) { throw error; }
   }
@@ -55,8 +56,7 @@ export class ModulesService {
       if (!moduleExists) throw new Error('Module not found');
       if (moduleExists.active) throw new Error('Module is active');
 
-      const moduleRestored = await this.moduleRespository.restore(id);
-      return moduleRestored;
+      return await this.moduleRespository.update(id, { active: true, deletedAt: null });
     } catch (error) { throw error; }
   }
 
@@ -67,8 +67,9 @@ export class ModulesService {
       if (!moduleExists) throw new Error('Module not found');
       if (!moduleExists.active) throw new Error('Module is inactive');
 
-      const deletedModule = await this.moduleRespository.softDelete(id);
-      return deletedModule;
+      moduleExists.active = false;
+      moduleExists.deletedAt = new Date();
+      return await this.moduleRespository.save(moduleExists);
     } catch (error) { throw error; }
   }
 

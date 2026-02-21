@@ -1,4 +1,5 @@
 import { IsString, MinLength, MaxLength, Matches, IsNotEmpty, IsNumber, Min, IsEmail, } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -10,7 +11,8 @@ export class CreateUserDto {
     @IsString()
     @MinLength(4)
     @MaxLength(50)
-    @Matches(/^[a-zA-Z]+$/, { message: 'Username must contain only letters' })
+    @Matches(/^[a-zA-Z\s]+$/, { message: 'name must contain only letters' })
+    @Transform(({ value }) => value.toLowerCase())
     name: string;
 
     @IsNotEmpty()

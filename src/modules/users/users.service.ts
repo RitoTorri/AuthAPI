@@ -28,7 +28,10 @@ export class UsersService {
       const passwordHash = await bcrypt.hash(createUserDto.password, 10);
 
       const newUser = this.userRepository.create({ ...createUserDto, password: passwordHash });
-      return await this.userRepository.save(newUser);
+      const userSaved = await this.userRepository.save(newUser);
+      
+      const {password, updatedAt, deletedAt, ...result } = userSaved;
+      return result;
     } catch (error) { throw error; }
   }
 
@@ -40,7 +43,7 @@ export class UsersService {
         take: limit,
         skip: (page - 1) * limit,
         select: ['userId', 'email', 'active'],
-        order: { roleId: 'ASC' },
+        order: { userId: 'ASC' },
         withDeleted: true,
       });
 
@@ -63,6 +66,7 @@ export class UsersService {
       if (!userExists) throw new Error('User not found');
       if (!userExists.active) throw new Error('User is inactive');
 
+      console.log(updateUserDto);
       if (updateUserDto.email) {
         const emailExists = await this.findByEmail(updateUserDto.email);
         if (emailExists && emailExists.userId !== id) throw new Error('User already exists');
@@ -85,7 +89,9 @@ export class UsersService {
       if (!userExists) throw new Error('User not found');
       if (!userExists.active) throw new Error('User is already inactive');
 
-      return await this.userRepository.softDelete(id);
+      userExists.active = false;
+      userExists.deletedAt = new Date();
+      return await this.userRepository.save(userExists);
     } catch (error) { throw error; }
   }
 
@@ -97,7 +103,7 @@ export class UsersService {
       if (!userExists) throw new Error('User not found');
       if (userExists.active) throw new Error('User is already active');
 
-      return await this.userRepository.restore(id);
+      return await this.userRepository.update(id, { active: true, deletedAt: null });
     } catch (error) { throw error; }
   }
 

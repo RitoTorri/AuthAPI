@@ -48,7 +48,7 @@ export class ModulesController {
     try {
       const updatedModule = await this.modulesService.update(+id, updateModuleDto);
       return updatedModule
-        ? responses.responseSuccessful(res, 200, 'Módulo actualizado exitosamente')
+        ? responses.responseSuccessful(res, 204)
         : responses.responsefailed(res, 400, 'Error al actualizar el módulo.');
 
     } catch (error) {

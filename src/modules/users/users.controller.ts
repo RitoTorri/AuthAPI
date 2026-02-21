@@ -15,7 +15,7 @@ export class UsersController {
     try {
       const user = await this.usersService.create(createUserDto);
       return user
-        ? responses.responseSuccessful(res, 204, "Usuario creado de manera exitosa", user)
+        ? responses.responseSuccessful(res, 201, "Usuario creado de manera exitosa", user)
         : responses.responsefailed(res, 400, 'No se pudo crear el usuario');
 
     } catch (error) {
@@ -52,16 +52,26 @@ export class UsersController {
 
 
   @Patch(':id')
-  update(@Res() res: Response, @Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Res() res: Response, @Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      const userUpdated = this.usersService.update(+id, updateUserDto);
+      const userUpdated = await this.usersService.update(+id, updateUserDto);
       return userUpdated
-        ? responses.responseSuccessful(res, 200, "Usuario actualizado de manera exitosa", userUpdated)
+        ? responses.responseSuccessful(res, 204)
         : responses.responsefailed(res, 400, 'No se pudo actualizar el usuario');
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return responses.responsefailed(res, 500, errorMessage);
+
+      switch (errorMessage) {
+        case 'User not found':
+          return responses.responsefailed(res, 404, "No se encontró el usuario especificado");
+        case 'User is inactive':
+          return responses.responsefailed(res, 409, "El usuario especificado está inactivo");
+        case 'User already exists':
+          return responses.responsefailed(res, 409, "Ya existe un usuario con ese correo electrónico");
+        default:
+          return responses.responsefailed(res, 500, errorMessage);
+      }
     }
   }
 

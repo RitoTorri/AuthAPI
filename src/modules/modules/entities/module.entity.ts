@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity("modules")
-export class Module {
+export class Modul {
     @PrimaryGeneratedColumn()
     moduleId: number;
 
@@ -18,5 +18,5 @@ export class Module {
     updatedAt: Date;
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
-    deletedAt: Date;
+    deletedAt: Date | null;
 }

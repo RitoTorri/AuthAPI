@@ -27,7 +27,8 @@ export class RolesService {
       return await this.roleRepository.find({
         where: { active: active },
         select: ['roleId', 'name', 'active'],
-        order: { roleId: 'ASC' }
+        order: { roleId: 'ASC' },
+        withDeleted: true,
       });
     } catch (error) { throw error; }
   }
@@ -54,8 +55,7 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (roleExists.active) throw new Error('Role is active');
 
-      const roleRestored = await this.roleRepository.restore(id);
-      return roleRestored;
+      return await this.roleRepository.update(id, { active: true, deletedAt: null });
     } catch (error) { throw error; }
   }
 
@@ -66,8 +66,9 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (!roleExists.active) throw new Error('Role is inactive');
 
-      const roleDeleted = await this.roleRepository.softDelete(id);
-      return roleDeleted;
+      roleExists.active = false;
+      roleExists.deletedAt = new Date();
+      return await this.roleRepository.save(roleExists);
     } catch (error) { throw error; }
   }
 

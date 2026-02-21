@@ -5,6 +5,9 @@ export class User {
     @PrimaryGeneratedColumn()
     userId: number;
 
+    @Column({ nullable: false, length: 100 })
+    name : string;
+
     @Column({ nullable: false })
     roleId: number;
 
@@ -24,5 +27,5 @@ export class User {
     updatedAt: Date;
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
-    deletedAt: Date;
+    deletedAt: Date | null;
 }

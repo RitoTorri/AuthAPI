@@ -18,5 +18,5 @@ export class Role {
     updatedAt: Date;
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
-    deletedAt: Date;
+    deletedAt: Date | null;
 }
