@@ -1,4 +1,6 @@
+import { Permission } from 'src/modules/permissions/entities/permission.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { OneToMany } from 'typeorm';
 
 @Entity("modules")
 export class Modul {
@@ -19,4 +21,7 @@ export class Modul {
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
     deletedAt: Date | null;
+
+    @OneToMany(() => Permission, (permission) => permission.modul)
+    permissions: Permission[];
 }

@@ -1,4 +1,6 @@
+import { User } from 'src/modules/users/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { OneToMany } from 'typeorm';
 
 @Entity("roles")
 export class Role {
@@ -19,4 +21,7 @@ export class Role {
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
     deletedAt: Date | null;
+
+    @OneToMany( () => User, (user) => user.role)
+    users: User[];
 }

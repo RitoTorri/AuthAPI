@@ -8,6 +8,7 @@ import { ModulesModule } from './modules/modules/modules.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { RolesPermissionsModule } from './modules/roles_permissions/roles_permissions.module';
+import { PermissionsModule } from './modules/permissions/permissions.module';
 
 @Module({
   imports: [
@@ -15,21 +16,23 @@ import { RolesPermissionsModule } from './modules/roles_permissions/roles_permis
     ConfigModule.forRoot({
       isGlobal: true, // Hace que config sea accesible en to                      da la app
     }),
-    
+
     // 2. Usar forRootAsync para cargar la configuración mediante la clase
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    
+
     ModulesModule,
-    
+
     UsersModule,
-    
+
     RolesModule,
-    
+
     RolesPermissionsModule,
+
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

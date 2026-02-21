@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ModuleDto } from './dto/module.dto';
 import { Modul } from './entities/module.entity';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()
 export class ModulesService {
   constructor(
     @InjectRepository(Modul)
     private readonly moduleRespository: Repository<Modul>,
+    private readonly permissionsService: PermissionsService,
   ) { }
 
   async create(createModuleDto: ModuleDto) {
@@ -17,7 +19,10 @@ export class ModulesService {
       if (moduleExists !== null) throw new Error('Module already exists');
 
       const newModule = this.moduleRespository.create(createModuleDto);
-      return await this.moduleRespository.save(newModule);
+      const moduleSaved = await this.moduleRespository.save(newModule);
+
+      const permissionsCreated = await this.permissionsService.create(moduleSaved.moduleId);
+      return { ...moduleSaved, permissions_created: permissionsCreated.length };
     } catch (error) { throw error; }
   }
 
