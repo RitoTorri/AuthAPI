@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Unique } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Unique, OneToMany } from 'typeorm';
 import { actionsPermissions } from 'src/shared/enums/actions.enums';
 import { Modul } from 'src/modules/modules/entities/module.entity';
+import { RolePermission } from 'src/modules/role_permissions/entities/role_permission.entity'; // Ajusta las rutas
+import { Exclude } from 'class-transformer';
 
 @Entity("permissions")  
 @Unique(['modul', 'typePermission'])
@@ -28,4 +30,7 @@ export class Permission {
 
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
+
+    @OneToMany(() => RolePermission, (rolePermission) => rolePermission.permission)
+    rolePermissions: RolePermission[]; // Carga en memoria
 }

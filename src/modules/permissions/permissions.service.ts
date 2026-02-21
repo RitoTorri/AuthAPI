@@ -45,4 +45,10 @@ export class PermissionsService {
         }
         finally { await queryRunner.release(); }
     }
+
+    async findById(id: number) {
+        try {
+            return await this.dataSource.getRepository(Permission).findOne({ where: { permissionId: id } });
+        } catch (error) { throw error; }
+    }
 }
