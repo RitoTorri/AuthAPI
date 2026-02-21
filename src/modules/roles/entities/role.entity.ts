@@ -1,4 +1,8 @@
+import { User } from 'src/modules/users/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { OneToMany } from 'typeorm';
+import { RolePermission } from '../../role_permissions/entities/role_permission.entity'; // Ajusta las rutas
+import { Exclude } from 'class-transformer';
 
 @Entity("roles")
 export class Role {
@@ -18,9 +22,11 @@ export class Role {
     updatedAt: Date;
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
-<<<<<<< HEAD
-    deletedAt: Date;
-=======
     deletedAt: Date | null;
->>>>>>> desarrollo
+
+    @OneToMany(() => User, (user) => user.role)
+    users: User[];
+
+    @OneToMany(() => RolePermission, (rolePermissions) => rolePermissions.role)
+    rolesPermissions: RolePermission[]; // Carga en memoria
 }

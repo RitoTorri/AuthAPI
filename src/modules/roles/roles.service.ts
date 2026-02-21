@@ -28,11 +28,7 @@ export class RolesService {
         where: { active: active },
         select: ['roleId', 'name', 'active'],
         order: { roleId: 'ASC' },
-<<<<<<< HEAD
-        withDeleted: true
-=======
         withDeleted: true,
->>>>>>> desarrollo
       });
     } catch (error) { throw error; }
   }
@@ -59,12 +55,7 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (roleExists.active) throw new Error('Role is active');
 
-<<<<<<< HEAD
-      const roleRestored = await this.roleRepository.update(id, { active: true });
-      return roleRestored;
-=======
       return await this.roleRepository.update(id, { active: true, deletedAt: null });
->>>>>>> desarrollo
     } catch (error) { throw error; }
   }
 
@@ -75,27 +66,14 @@ export class RolesService {
       if (!roleExists) throw new Error('Role not found');
       if (!roleExists.active) throw new Error('Role is inactive');
 
-<<<<<<< HEAD
-      const roleDeleted = await this.roleRepository.update(id, { active: false, deletedAt: new Date() });
-      return roleDeleted;
-=======
       roleExists.active = false;
       roleExists.deletedAt = new Date();
       return await this.roleRepository.save(roleExists);
->>>>>>> desarrollo
     } catch (error) { throw error; }
   }
 
 
   async findByName(name: string) {
-<<<<<<< HEAD
-    return await this.roleRepository.findOne({
-      where: { name: name },
-      select: ['roleId', 'name', 'active'],
-      order: { roleId: 'ASC' },
-      withDeleted: true,
-    });
-=======
     try {
       return await this.roleRepository.findOne({
         where: { name: name },
@@ -104,19 +82,10 @@ export class RolesService {
         withDeleted: true,
       });
     } catch (error) { throw error; }
->>>>>>> desarrollo
   }
 
 
   async findById(id: number) {
-<<<<<<< HEAD
-    return await this.roleRepository.findOne({
-      where: { roleId: id },
-      select: ['roleId', 'name', 'active'],
-      order: { roleId: 'ASC' },
-      withDeleted: true,
-    });
-=======
     try {
       return await this.roleRepository.findOne({
         where: { roleId: id },
@@ -124,6 +93,5 @@ export class RolesService {
         withDeleted: true,
       });
     } catch (error) { throw error; }
->>>>>>> desarrollo
   }
 }

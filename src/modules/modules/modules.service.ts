@@ -1,39 +1,16 @@
 import { Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-import { CreateModuleDto } from './dto/create-module.dto';
-import { UpdateModuleDto } from './dto/update-module.dto';
-
-@Injectable()
-export class ModulesService {
-  create(createModuleDto: CreateModuleDto) {
-    return 'This action adds a new module';
-  }
-
-  findAll() {
-    return `This action returns all modules`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} module`;
-  }
-
-  update(id: number, updateModuleDto: UpdateModuleDto) {
-    return `This action updates a #${id} module`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} module`;
-=======
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ModuleDto } from './dto/module.dto';
 import { Modul } from './entities/module.entity';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()
 export class ModulesService {
   constructor(
     @InjectRepository(Modul)
     private readonly moduleRespository: Repository<Modul>,
+    private readonly permissionsService: PermissionsService,
   ) { }
 
   async create(createModuleDto: ModuleDto) {
@@ -42,7 +19,10 @@ export class ModulesService {
       if (moduleExists !== null) throw new Error('Module already exists');
 
       const newModule = this.moduleRespository.create(createModuleDto);
-      return await this.moduleRespository.save(newModule);
+      const moduleSaved = await this.moduleRespository.save(newModule);
+
+      const permissionsCreated = await this.permissionsService.create(moduleSaved.moduleId);
+      return { ...moduleSaved, permissions_created: permissionsCreated.length };
     } catch (error) { throw error; }
   }
 
@@ -119,6 +99,5 @@ export class ModulesService {
         withDeleted: true
       });
     } catch (error) { throw error; }
->>>>>>> desarrollo
   }
 }

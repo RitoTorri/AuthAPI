@@ -1,15 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Role } from 'src/modules/roles/entities/role.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
     userId: number;
 
-    @Column({ nullable: false, length: 100 })
-    name : string;
+    @ManyToOne(() => Role, (role) => role.users, {
+        eager: false,      // 1. Carga bajo demanda
+        cascade: true,     // 2. Persistencia en cascada
+        onDelete: 'CASCADE', // 3. Borrado físico vinculado
+        onUpdate: 'CASCADE', // 4. Actualización vinculada
+    })
+    @JoinColumn({ name: 'roleId' })
+    role: Role;
 
-    @Column({ nullable: false })
-    roleId: number;
+    @Column({ nullable: false, length: 100 })
+    name: string;
 
     @Column({ unique: true, nullable: false, length: 100 })
     email: string;

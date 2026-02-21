@@ -66,7 +66,6 @@ export class UsersService {
       if (!userExists) throw new Error('User not found');
       if (!userExists.active) throw new Error('User is inactive');
 
-      console.log(updateUserDto);
       if (updateUserDto.email) {
         const emailExists = await this.findByEmail(updateUserDto.email);
         if (emailExists && emailExists.userId !== id) throw new Error('User already exists');
