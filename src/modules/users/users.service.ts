@@ -114,7 +114,8 @@ export class UsersService {
     try {
       return await this.userRepository.findOne({
         where: { email: email },
-        select: ['userId', 'email', 'active'],
+        select: ['userId', 'email', 'roleId', 'password', 'active'],
+        relations: ['role'],
         withDeleted: true,
       });
     } catch (error) { throw error; }

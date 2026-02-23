@@ -2,7 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Jo
 import { actionsPermissions } from 'src/shared/enums/actions.enums';
 import { Modul } from 'src/modules/modules/entities/module.entity';
 import { RolePermission } from 'src/modules/role_permissions/entities/role_permission.entity'; // Ajusta las rutas
-import { Exclude } from 'class-transformer';
 
 @Entity("permissions")
 @Unique(['modul', 'typePermission'])

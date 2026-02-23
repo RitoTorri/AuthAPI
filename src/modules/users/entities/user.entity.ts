@@ -1,5 +1,6 @@
 import { Role } from 'src/modules/roles/entities/role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { RefreshToken } from 'src/modules/auth/entities/refreshToken.entity';
 
 @Entity('users')
 export class User {
@@ -40,4 +41,7 @@ export class User {
     })
     @JoinColumn({ name: 'roleId' })
     role: Role;
+    
+    @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
+    refreshTokens: RefreshToken[];
 }
