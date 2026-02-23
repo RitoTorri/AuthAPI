@@ -29,6 +29,16 @@ export class RolePermission {
     @Column({ default: true })
     active: boolean;
 
+    // Auditoría
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    deletedAt: Date | null;
+
     // Relaciones
     @ManyToOne(() => Role, (role) => role.rolesPermissions, {
         onDelete: 'CASCADE',
@@ -41,14 +51,4 @@ export class RolePermission {
     })
     @JoinColumn({ name: 'permissionId' })
     permission: Permission;
-
-    // Auditoría
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
-
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    updatedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date | null;
 }

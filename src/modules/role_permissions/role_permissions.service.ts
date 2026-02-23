@@ -30,11 +30,8 @@ export class RolePermissionsService {
       const existPermission = await this.permissionsService.findById(createRolePermissionDto.permissionId);
       if (!existPermission) throw new Error('Permission not found');
 
-      // Crear la relación
-      const rolePermission = this.rolePermissionsRepository.create({
-        roleId: createRolePermissionDto.roleId,
-        permissionId: createRolePermissionDto.permissionId,
-      });
+      // Guardar en la base de datos
+      const rolePermission = this.rolePermissionsRepository.create(createRolePermissionDto);
       return await this.rolePermissionsRepository.save(rolePermission);
     } catch (error) { throw error; }
   }

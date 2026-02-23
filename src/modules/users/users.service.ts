@@ -27,10 +27,13 @@ export class UsersService {
 
       const passwordHash = await bcrypt.hash(createUserDto.password, 10);
 
-      const newUser = this.userRepository.create({ ...createUserDto, password: passwordHash });
+      const newUser = this.userRepository.create({
+        ...createUserDto,
+        password: passwordHash
+      });
       const userSaved = await this.userRepository.save(newUser);
-      
-      const {password, updatedAt, deletedAt, ...result } = userSaved;
+
+      const { password, updatedAt, deletedAt, ...result } = userSaved;
       return result;
     } catch (error) { throw error; }
   }

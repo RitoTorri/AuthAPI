@@ -26,7 +26,7 @@ export class PermissionsService {
 
             const permissionsToCreate = actions.map((action) => {
                 return queryRunner.manager.create(Permission, {
-                    modul: { moduleId: moduleId }, // Usamos el ID recibido
+                    moduleId: moduleId, // Usamos el ID recibido
                     typePermission: action,
                 });
             });
