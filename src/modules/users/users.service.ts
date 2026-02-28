@@ -45,7 +45,14 @@ export class UsersService {
         where: { active: active },
         take: limit,
         skip: (page - 1) * limit,
-        select: ['userId', 'email', 'active'],
+        select: {
+          userId: true,
+          name: true,
+          email: true,
+          active: true,
+          role: { roleId: true, name: true },
+        },
+        relations: ['role'],
         order: { userId: 'ASC' },
         withDeleted: true,
       });
