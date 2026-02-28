@@ -43,7 +43,8 @@ Si quieres ver las propiedades de las entidades, puedes ir a este sitio: [MER co
   "userID":"1",
   "roleId":"1",
   "iat": 1516239022,
-  "exp": 1516242622 
+  "exp": 1516242622,
+  "TOKEN_ACCESS"=LA_Clave_que_TU_QUIERAS
 }
 ```
 
@@ -51,7 +52,9 @@ Si quieres ver las propiedades de las entidades, puedes ir a este sitio: [MER co
 ```json
 {
   "userId": 1,
-  "token": "hash_aleatorio_muy_largo",
+  "iat": 1516239022,
+  "exp": 1516242622,
+  "TOKEN_ACCESS_REFRESH"=LA_Clave_que_TU_QUIERAS
 }
 ```
 
