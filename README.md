@@ -50,7 +50,6 @@ Si quieres ver las propiedades de las entidades, puedes ir a este sitio: [MER co
 **TOKEN REFRESH:**
 ```json
 {
-  "tokenId": 123,
   "userId": 1,
   "token": "hash_aleatorio_muy_largo",
 }
@@ -154,4 +153,12 @@ docker compose -f docker-compose.yml up
 # SOLO DESARROLLO
 # Modo hot-reload
 npm run start:dev
+```
+
+### 📄 Documentación
+
+Para ver la documentación de la API REST, visite la siguiente URL:
+
+```bash
+http://localhost:PUERTO/docs
 ```
