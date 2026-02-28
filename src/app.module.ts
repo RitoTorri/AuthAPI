@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm'; // Carga de la configuración de TypeORM
 import { TypeOrmConfigService } from './config/typeorm.config';
@@ -9,6 +7,8 @@ import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolePermissionsModule } from './modules/role_permissions/role_permissions.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { PermissionsController } from './modules/permissions/permissions.controller';
 
 @Module({
   imports: [
@@ -31,8 +31,9 @@ import { RolePermissionsModule } from './modules/role_permissions/role_permissio
     PermissionsModule,
 
     RolePermissionsModule,
+
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [PermissionsController]
 })
 export class AppModule { }

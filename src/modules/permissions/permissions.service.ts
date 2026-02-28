@@ -26,7 +26,7 @@ export class PermissionsService {
 
             const permissionsToCreate = actions.map((action) => {
                 return queryRunner.manager.create(Permission, {
-                    modul: { moduleId: moduleId }, // Usamos el ID recibido
+                    moduleId: moduleId, // Usamos el ID recibido
                     typePermission: action,
                 });
             });
@@ -49,6 +49,41 @@ export class PermissionsService {
     async findById(id: number) {
         try {
             return await this.dataSource.getRepository(Permission).findOne({ where: { permissionId: id } });
+        } catch (error) { throw error; }
+    }
+
+    async findAll(active: boolean, page: number, limit: number) {
+        try {
+            // 1. Usamos findAndCount para obtener la data y el total al mismo tiempo
+            const [permissions, total] = await this.dataSource.getRepository(Permission).findAndCount({
+                where: { active: active }, // Filtro de activos/inactivos
+                take: limit,               // Cuántos traer (LIMIT)
+                skip: (page - 1) * limit,  // Cuántos saltar (OFFSET)
+                select: {
+                    permissionId: true,      // Ajusta según los nombres exactos de tus columnas
+                    typePermission: true,
+                    active: true,
+                    // Si tiene módulo relacionado:
+                    modul: {
+                        moduleId: true,
+                        name: true,
+                    },
+                },
+                relations: ['modul'],      // Carga la relación con el módulo
+                order: { permissionId: 'ASC' },
+            });
+
+            // 2. Retornamos la estructura estandarizada
+            return {
+                data: permissions,
+                meta: {
+                    totalItems: total,
+                    itemCount: permissions.length,
+                    itemsPerPage: limit,
+                    totalPages: Math.ceil(total / limit),
+                    currentPage: page,
+                },
+            };
         } catch (error) { throw error; }
     }
 }

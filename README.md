@@ -22,11 +22,77 @@ Sistema robusto de autenticación y control de acceso basado en **JWT (JSON Web
 
 # ⚙️ Arquitectura RBAC / MER
 
-**Modelo Entidad-Relación (MER)** del sistema de autenticación y control de acceso basado en roles (RBAC). El diseño garantiza escalabilidad, mantenibilidad y un control de acceso preciso siguiendo las mejores prácticas de seguridad.
+### 📑 Modelo Entidad-Relación (MER)
+
+Si quieres ver las propiedades de las entidades, puedes ir a este sitio: [MER completo](https://dbdiagram.io/d/Auth-API-6994d895bd82f5fce2fc2687).
 
 <div align="center">
   <img src="./public/MER.png" alt="RBAC / MER" width="1000" height="400">
 </div>
+
+### 🔄 Flujo de autenticación
+<div align="center">
+  <img src="./public/FlujoDeTokens.png" alt="RBAC / MER" width="1000" height="400">
+</div>
+
+### 🔑 Composición de los TOKENS
+
+**TOKEN ACCESS:**
+```json
+{
+  "userID":"1",
+  "roleId":"1",
+  "iat": 1516239022,
+  "exp": 1516242622 
+}
+```
+
+**TOKEN REFRESH:**
+```json
+{
+  "userId": 1,
+  "token": "hash_aleatorio_muy_largo",
+}
+```
+
+**Json del cliente al logearse**
+```json
+{
+  "userID":"1",
+  "name":"jesus francisco cortez torres",
+  "email":"jesus@gmail.com",
+  "role":{
+    "roleId":"1",
+    "name":"administrador"
+  },
+  "permissions":[
+    {
+    "name_module":"inventario",
+      "permissions":["read","update"]
+    },
+    {
+    "name_module":"ventas",
+      "permissions":["read","update","delete","create"]
+    }
+  ],
+  "tokens":{
+    "token_access":"ABCGDxs283...",
+    "token_refresh":"ABCGDxs283..."
+  }
+}
+```
+
+### ⌨️ Codigo de la Base de datos
+
+Puedes ver el codigo de la base de datos [📍Aqui]()
+
+<br>
+
+# 🌟 Características Especiales
+
+* **RBAC Dinámico:** Control total basado en roles y permisos.
+* **Auto-Seed de Permisos:** ⚡ Al registrar un nuevo módulo, el sistema vincula automáticamente los permisos de CRUD correspondientes en la DB.
+* **Seguridad:** Implementación de Refresh Tokens y Rate Limiting.
 
 <br>
 
@@ -34,6 +100,13 @@ Sistema robusto de autenticación y control de acceso basado en **JWT (JSON Web
 
 ### 📦 Instalación:
 ```bash
+# Clona el repositorio
+git clone https://github.com/RitoTorri/AuthAPI
+
+# Entra al directorio
+cd AuthAPI
+
+# Instala las dependencias
 npm install
 ```
 
@@ -80,4 +153,12 @@ docker compose -f docker-compose.yml up
 # SOLO DESARROLLO
 # Modo hot-reload
 npm run start:dev
+```
+
+### 📄 Documentación
+
+Para ver la documentación de la API REST, visite la siguiente URL:
+
+```bash
+http://localhost:PUERTO/docs
 ```

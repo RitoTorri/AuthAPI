@@ -27,10 +27,13 @@ export class UsersService {
 
       const passwordHash = await bcrypt.hash(createUserDto.password, 10);
 
-      const newUser = this.userRepository.create({ ...createUserDto, password: passwordHash });
+      const newUser = this.userRepository.create({
+        ...createUserDto,
+        password: passwordHash
+      });
       const userSaved = await this.userRepository.save(newUser);
-      
-      const {password, updatedAt, deletedAt, ...result } = userSaved;
+
+      const { password, updatedAt, deletedAt, ...result } = userSaved;
       return result;
     } catch (error) { throw error; }
   }
@@ -42,7 +45,14 @@ export class UsersService {
         where: { active: active },
         take: limit,
         skip: (page - 1) * limit,
-        select: ['userId', 'email', 'active'],
+        select: {
+          userId: true,
+          name: true,
+          email: true,
+          active: true,
+          role: { roleId: true, name: true },
+        },
+        relations: ['role'],
         order: { userId: 'ASC' },
         withDeleted: true,
       });
@@ -111,7 +121,8 @@ export class UsersService {
     try {
       return await this.userRepository.findOne({
         where: { email: email },
-        select: ['userId', 'email', 'active'],
+        select: ['userId', 'name','email', 'roleId', 'password', 'active'],
+        relations: ['role'],
         withDeleted: true,
       });
     } catch (error) { throw error; }
@@ -121,7 +132,8 @@ export class UsersService {
     try {
       return await this.userRepository.findOne({
         where: { userId: id },
-        select: ['userId', 'email', 'active'],
+        select: ['userId', 'name','email', 'roleId', 'password', 'active'],
+        relations: ['role'],
         withDeleted: true,
       });
     } catch (error) { throw new error; }

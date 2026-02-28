@@ -2,7 +2,6 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { OneToMany } from 'typeorm';
 import { RolePermission } from '../../role_permissions/entities/role_permission.entity'; // Ajusta las rutas
-import { Exclude } from 'class-transformer';
 
 @Entity("roles")
 export class Role {

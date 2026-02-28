@@ -1,19 +1,15 @@
 import { Role } from 'src/modules/roles/entities/role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { RefreshToken } from 'src/modules/auth/entities/refreshToken.entity';
 
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
     userId: number;
 
-    @ManyToOne(() => Role, (role) => role.users, {
-        eager: false,      // 1. Carga bajo demanda
-        cascade: true,     // 2. Persistencia en cascada
-        onDelete: 'CASCADE', // 3. Borrado físico vinculado
-        onUpdate: 'CASCADE', // 4. Actualización vinculada
-    })
-    @JoinColumn({ name: 'roleId' })
-    role: Role;
+    // Columna fisica de la DB
+    @Column({ nullable: false })
+    roleId: number;
 
     @Column({ nullable: false, length: 100 })
     name: string;
@@ -35,4 +31,17 @@ export class User {
 
     @DeleteDateColumn({ type: 'timestamptz', default: null })
     deletedAt: Date | null;
+
+    // Define la relacion de las columnas 
+    @ManyToOne(() => Role, (role) => role.users, {
+        eager: false,      // 1. Carga bajo demanda
+        cascade: true,     // 2. Persistencia en cascada
+        onDelete: 'CASCADE', // 3. Borrado físico vinculado
+        onUpdate: 'CASCADE', // 4. Actualización vinculada
+    })
+    @JoinColumn({ name: 'roleId' })
+    role: Role;
+    
+    @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
+    refreshTokens: RefreshToken[];
 }

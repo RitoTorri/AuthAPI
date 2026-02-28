@@ -38,7 +38,9 @@ export class UsersController {
   @Get('')
   async findAll(@Res() res: Response, @Query() paginationDto: PaginationDto) {
     try {
-      const { active, page, limit } = paginationDto;
+      let { active, page = 1, limit = 10 } = paginationDto;
+      console.log(active);
+      
       const lisUsers = await this.usersService.findAll(active, page, limit);
       return lisUsers.meta.totalItems > 0
         ? responses.responseSuccessful(res, 200, "Usuarios obtenidos de manera exitosa", lisUsers)
