@@ -84,7 +84,7 @@ Si quieres ver las propiedades de las entidades, puedes ir a este sitio: [MER co
 
 ### ⌨️ Codigo de la Base de datos
 
-Puedes ver el codigo de la base de datos [📍Aqui]()
+Puedes ver el codigo de la base de datos [📍Aqui](https://github.com/RitoTorri/AuthAPI/blob/master/database/DB.sql)
 
 <br>
 
